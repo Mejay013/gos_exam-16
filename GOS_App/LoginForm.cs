@@ -21,14 +21,14 @@ namespace GOS_App
             timer1.Start();
         }
 
-        private void button_login_Click(object sender, EventArgs e) 
+        private void button_login_Click(object sender, EventArgs e) // если нажата кнопка Login
         {
 
-            db db = new db(); 
+            db db = new db(); // создаем новый обьект класс  db( класс для работы с базой данных) 
 
 
-            string username = textBox_username.Text.ToLower(); 
-            string password = textBox_password.Text.ToLower(); 
+            string username = textBox_username.Text.ToLower(); // получаем почту
+            string password = textBox_password.Text.ToLower(); // получаем пароль
 
             if (check_valid(username, password)){ // если сообщения не пустые
                 if (db.find_in_db(username, password)) // если пользователь найден в базе данных и данные совпадают
@@ -39,16 +39,16 @@ namespace GOS_App
                         {
                             if (db.get_user_role(username)[0][0] == "1") // если роль пользователя - администратор
                             {
-                                this.Hide(); 
-                                AdminForm adminform = new AdminForm(username);
-                                adminform.Show(); 
+                                this.Hide(); // скрываем окно
+                                AdminForm adminform = new AdminForm(username); // создаем обьект панели админа
+                                adminform.Show(); // показываем панель админа
                             }
                             else // если роль пользователя - пользователь
                             {
 
                                 UserForm user = new UserForm(username);
                                 user.Show();
-                                this.Hide(); 
+                                this.Hide(); // скрываем окно
                             }
                         }
                         else
@@ -81,27 +81,27 @@ namespace GOS_App
 
         }
 
-        public void show_message(string message)
+        public void show_message(string message) //  функция вывода сообщение с параметром - текст сообщения
         {
-            MessageBox.Show(message); 
+            MessageBox.Show(message); // выводим текст сообщения
         }
-        private void button_exit_Click(object sender, EventArgs e)
+        private void button_exit_Click(object sender, EventArgs e) // если нажата кнопка закрыть окно
         {
-            this.Close();
+            this.Close(); // закрываем окно
         }
 
-        public bool check_valid(string username,string password) 
+        public bool check_valid(string username,string password) // проверка на пустоту true - поля корректны, false - одно из полей некорректно
         {
-            if( username == ""){ 
+            if( username == ""){ // если поле емаил пустое
                 return false;
             }
-            else 
+            else // если поле емаил не пустое
             {
-                if (password == "")
+                if (password == "") // если поле пароль пустое
                 {
                     return false;
                 }
-                else
+                else // если поле пароль не пустое
                 {
                     return true;
                 }

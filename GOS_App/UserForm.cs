@@ -43,18 +43,18 @@ namespace GOS_App
             MessageBox.Show("Данные о выходе внесены");
             this.Close();
         }
-        public void reload_panel(string user_email) 
+        public void reload_panel(string user_email) // функция обновления панели 
         {
-            db db = new db(); 
-            dataGridView1.Rows.Clear();
-            List<string[]> all_users_data; 
-            all_users_data = db.get_user_logs(user_email); 
+            db db = new db(); // создаем обьект бд
+            dataGridView1.Rows.Clear(); // очищаем панель админа
+            List<string[]> all_users_data; // создаем пустую список
+            all_users_data = db.get_user_logs(user_email); // получем всех пользователей всех офисов
 
-            foreach (string[] s in all_users_data) 
+            foreach (string[] s in all_users_data) // перебираем весь список
             {
                 if (s[1] != DateTime.Now.ToString("t", DateTimeFormatInfo.InvariantInfo))
                 {
-                    dataGridView1.Rows.Add(s);
+                    dataGridView1.Rows.Add(s); // выводим пользователей как таблицу
                 }
                 else
                 {
@@ -62,32 +62,32 @@ namespace GOS_App
                 }
             }
 
-            foreach (DataGridViewRow row in dataGridView1.Rows) 
+            foreach (DataGridViewRow row in dataGridView1.Rows) // перебираем все строки таблицы
             {
-                try 
+                try // строка отлова ошибок, если в коде блока try  возникает ошибка, то выполняется блок catch
                 {
-                    Console.WriteLine(all_users_data[row.Index][3]); 
+                    Console.WriteLine(all_users_data[row.Index][3]); // пробуем вывести роль,если выводится значит список не закончился и блок catch пропускается
                 }
-                catch (ArgumentOutOfRangeException) 
+                catch (ArgumentOutOfRangeException) // если список закончился и в блоке try возникла ошибка ArgumentOutOfRangeException - выход за индекс массива
                 {
-                    break; 
+                    break; // происходит выход из функции
                 }
                 //if ((all_users_data[row.Index][2]).ToString() == "" && (all_users_data[row.Index][1]).ToString() != DateTime.Now.ToString("t", DateTimeFormatInfo.InvariantInfo)) // если пользователь заблокирован ( значение в БД 0, что интерпретируется как False
                 if (row.Cells[2].Value == "")
                 {
-                    row.DefaultCellStyle.BackColor = Color.Red; 
+                    row.DefaultCellStyle.BackColor = Color.Red; // помечаем строку красным цветом
                     //row.Cells[4].Value = all_users_data[row.Index][4];
                     count_error += 1;
                 }
             
                 else 
                 {
-                    row.DefaultCellStyle.BackColor = Color.White;  
+                    row.DefaultCellStyle.BackColor = Color.White; // помечаем белым цветом( он по умолчанию белый, однако когда 
                     
-                    IFormatProvider culture = CultureInfo.InvariantCulture;  
+                    IFormatProvider culture = CultureInfo.InvariantCulture; // системная штука 
                     DateTime dt = DateTime.ParseExact(row.Cells[0].Value.ToString().Replace('/', '.'), "MM.dd.yyyy", System.Globalization.CultureInfo.InvariantCulture);
       
-                    TimeSpan span = DateTime.Now.Subtract(dt); 
+                    TimeSpan span = DateTime.Now.Subtract(dt); // обьект разницы времен
                     if (row.Cells[3].Value.ToString() != "")
                     {
                         TimeSpan new_value = TimeSpan.Parse(row.Cells[3].Value.ToString());
